@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="github-stats">
+
+	<property name="jar.name" value="github-stats.jar" />
+	<property name="run.dir" value="run" />
+	<property name="bin.dir" value="bin" />
+	<property name="lib.dir" value="run/lib" />
+
+	<path id="cp">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="init" description="init">
+		<echo>Start build github-stats</echo>
+	</target>
+
+	<target name="build" depends="init,clean" description="build">
+		<mkdir dir="${bin.dir}" />
+		<javac srcdir="src" destdir="${bin.dir}" classpath="${lib.dir}" debug="on" target="1.8" source="1.8">
+			<classpath refid="cp">
+			</classpath>
+		</javac>
+		<copy todir="${bin.dir}">
+			<fileset dir="src">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+		<jar destfile="${lib.dir}/${jar.name}">
+			<fileset dir="${bin.dir}">
+				<include name="**" />
+			</fileset>
+		</jar>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${bin.dir}">
+				<include name="**" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="clean" depends="init" description="clean">
+		<delete includeemptydirs="true" failonerror="no">
+			<fileset dir="${bin.dir}">
+				<include name="**" />
+			</fileset>
+		</delete>
+	</target>
+</project>
